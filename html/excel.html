@@ -8,6 +8,57 @@
   <link rel="stylesheet" href="/pagvideos.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      height: 100vh;
+    }
+
+    #videoContainer {
+      position: absolute;
+      left: 20%;
+      display: none; /* Initially hidden */
+      padding: 20px;
+      transition: all 0.3s ease; /* Smooth transition */
+      width: calc(80% - 40px); /* Take up remaining space when list collapses */
+    }
+
+    #videoList {
+      transition: all 0.3s ease;
+      width: 100%;
+      float: right; 
+    }
+
+    #videoList.collapsed {
+      width: 20%; /* Collapse width */
+    }
+
+    #videoContainer.active {
+      display: block; /* Show the video container */
+    }
+
+    video {
+      max-width: 100%; /* Make sure video fits the container */
+      height: auto;
+    }
+
+    #videoNotes {
+      width: 100%; /* Full width of the container */
+      margin-left: 10px;
+      resize: none; /* Disable manual resizing */
+      overflow: hidden; /* Hide scrollbar */
+      position: absolute; /* Change to relative */
+
+    }
+
+    #Container {
+      display: flex;
+      width: 100%;
+      position: relative; /* Allow absolute positioning for children */
+    }
+    
+  </style>
 </head>
 
 <body>
@@ -21,9 +72,9 @@
     </ul>
   </div>
 
-  <div id="content">
+  <div id="content" style="flex-grow: 1;">
     <div id="boxmenu">
-      <img src="/barras.png" id="menu-toggle">
+      <img src="/barras.png" id="menu-toggle" style="cursor: pointer;">
       <h2>Meus Cursos</h2>
     </div>
 
@@ -31,205 +82,81 @@
       <div class="progress-bar text-bg-warning" style="width: 0%">0%</div>
     </div>
 
-    <div id="Container" class="container-fluid">
-      <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true" onclick="openOverlay('videoOverlay', 1)">
-          <div class="d-flex align-items-center">
-            <div id="icon" style="margin-right: 15px;">
-              <img src="#" alt="Excel Básico" style="width: 70px; height: 70px; border-radius: 50%;">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h5 class="mb-1">Excel Office Básico</h5>
-                <small>10 minutos</small>
-              </div>
-              <p class="mb-1">Aula voltada para iniciantes.</p>
-              <small style="position: relative; right: 0;">Anna Victoria</small>
-            </div>
-          </div>
+    <div id="Container">
+      <div id="videoList" class="list-group">
+        <a href="#" class="list-group-item list-group-item-action" onclick="showVideo('Excel Office Básico', '/video/video-test.mp4', 1)">
+          <h5 class="mb-1">Excel Office Básico</h5>
+          <small>10 minutos</small>
+          <p class="mb-1">Aula voltada para iniciantes.</p>
+          <small style="position: relative; right: 0;">Anna Victoria</small>
         </a>
-        <a href="#" class="list-group-item list-group-item-action" onclick="openOverlay('videoOverlay2', 2)">
-          <div class="d-flex align-items-center">
-            <div id="icon" style="margin-right: 15px;">
-              <img src="#" alt="Excel Intermediário" style="width: 70px; height: 70px; border-radius: 50%;">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h5 class="mb-1">Excel Office Intermediário</h5>
-                <small>20 minutos</small>
-              </div>
-              <p class="mb-1">Aula voltada para revisão geral.</p>
-              <small style="position: relative; right: 0;">Anna Victoria</small>
-            </div>
-          </div>
+        <a href="#" class="list-group-item list-group-item-action" onclick="showVideo('Excel Office Intermediário', '/video/video-test.mp4', 2)">
+          <h5 class="mb-1">Excel Office Intermediário</h5>
+          <small>20 minutos</small>
+          <p class="mb-1">Aula voltada para revisão geral.</p>
+          <small style="position: relative; right: 0;">Anna Victoria</small>
         </a>
-        <a href="#" class="list-group-item list-group-item-action" onclick="openOverlay('videoOverlay3', 3)">
-          <div class="d-flex align-items-center">
-            <div id="icon" style="margin-right: 15px;">
-              <img src="#" alt="Excel Avançado" style="width: 70px; height: 70px; border-radius: 50%;">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h5 class="mb-1">Excel Office Avançado</h5>
-                <small>30 minutos</small>
-              </div>
-              <p class="mb-1">Aula voltada para aplicação de fórmulas.</p>
-              <small style="position: relative; right: 0;">Anna Victoria</small>
-            </div>
-          </div>
+        <a href="#" class="list-group-item list-group-item-action" onclick="showVideo('Excel Office Avançado', '/video/video-test.mp4', 3)">
+          <h5 class="mb-1">Excel Office Avançado</h5>
+          <small>30 minutos</small>
+          <p class="mb-1">Aula voltada para aplicação de fórmulas.</p>
+          <small style="position: relative; right: 0;">Anna Victoria</small>
         </a>
       </div>
-    </div>
 
-    <div id="videoOverlay" class="overlay">
-      <div class="overlay-content" style="display: flex; align-items: flex-start;">
-        <span class="close" onclick="closeOverlay('videoOverlay')" style="position: absolute; top: 10px; right: 10px; cursor: pointer;">&times;</span>
-        <video width="1280" height="720" controls style="margin-top: 50px;">
-          <source src="/video/video-test.mp4" type="video/mp4">
-          Seu navegador não suporta o elemento de vídeo.
-        </video>
-        <div style="margin-left: 20px;">
-          <h3>Excel Office Básico</h3>
-          <textarea id="videoNotes" rows="30" cols="50" placeholder="Escreva suas anotações aqui..." style="margin-top: 10px;"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div id="videoOverlay2" class="overlay">
-      <div class="overlay-content" style="display: flex; align-items: flex-start;">
-        <span class="close" onclick="closeOverlay('videoOverlay2')" style="position: absolute; top: 10px; right: 10px; cursor: pointer;">&times;</span>
-        <video width="1280" height="720" controls style="margin-top: 50px;">
-          <source src="/video/video-test.mp4" type="video/mp4">
-          Seu navegador não suporta o elemento de vídeo.
-        </video>
-        <div style="margin-left: 20px;">
-          <h3>Excel Office Intermediário</h3>
-          <textarea id="videoNotes" rows="30" cols="50" placeholder="Escreva suas anotações aqui..." style="margin-top: 10px;"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div id="videoOverlay3" class="overlay">
-      <div class="overlay-content" style="display: flex; align-items: flex-start;">
-        <span class="close" onclick="closeOverlay('videoOverlay3')" style="position: absolute; top: 10px; right: 10px; cursor: pointer;">&times;</span>
-        <video width="1280" height="720" controls style="margin-top: 50px;">
-          <source src="/video/video-test.mp4" type="video/mp4">
-          Seu navegador não suporta o elemento de vídeo.
-        </video>
-        <div style="margin-left: 20px;">
-          <h3>Excel Office Avançado</h3>
-          <textarea id="videoNotes" rows="30" cols="50" placeholder="Escreva suas anotações aqui..." style="margin-top: 10px;"></textarea>
-        </div>
+      <div id="videoContainer">
+        <h3 id="videoTitle"></h3>
+        <video id="videoPlayer" width="700" height="360" controls></video>
+        <textarea id="videoNotes" rows="1" placeholder="Escreva suas anotações aqui..."></textarea>
       </div>
     </div>
   </div>
 
   <!-- Scripts -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js'></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
 
   <script>
-    let usuarioId;
-    const totalVideos = 3;
-    let videosAssistidos = 0;
-    let videosJaAssistidos = [];
-  
-    function fetchUsuarioId() {
-      return fetch('/getUsuarioId')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Usuário não logado');
-          }
-          return response.json();
-        })
-        .then(data => {
-          usuarioId = data.usuarioId;
-          return fetchProgresso();
-        })
-        .catch(error => {
-          console.error('Erro ao buscar o ID do usuário:', error);
-        });
-    }
-  
-    function fetchProgresso() {
-      if (!usuarioId) {
-        console.error('Usuário não logado.');
-        return;
-      }
-  
-      return fetch(`/getProgresso?usuarioId=${usuarioId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao buscar o progresso');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.videosAssistidos !== undefined) {
-            videosAssistidos = data.videosAssistidos;
-            videosJaAssistidos = data.videosAssistidosIds || [];
-            const novaLargura = (videosAssistidos / totalVideos) * 100;
-            document.querySelector('.progress-bar').style.width = novaLargura + '%';
-            document.querySelector('.progress-bar').textContent = Math.round(novaLargura) + '%';
-          }
-        })
-        .catch(error => {
-          console.error('Erro ao carregar o progresso:', error);
-        });
-    }
-  
-    function openOverlay(overlayId, cursoId) {
-      if (!usuarioId) {
-        console.error('Usuário não logado.');
-        return;
+    let currentVideoId = null; // Variable to keep track of the currently opened video
+
+    function showVideo(title, src, cursoId) {
+      // Check if the same video is clicked again
+      if (currentVideoId === cursoId) {
+        // Reset to normal
+        document.getElementById('videoContainer').classList.remove('active');
+        document.getElementById('videoList').classList.remove('collapsed');
+        currentVideoId = null; // Reset current video ID
+      } else {
+        // Update video title and source
+        document.getElementById('videoTitle').textContent = title;
+        document.getElementById('videoPlayer').src = src;
+
+        // Show video container and collapse the list
+        document.getElementById('videoContainer').classList.add('active');
+        document.getElementById('videoList').classList.add('collapsed');
+        currentVideoId = cursoId; // Set current video ID
       }
 
-      if (!videosJaAssistidos.includes(overlayId)) {
-        videosJaAssistidos.push(overlayId);
-        videosAssistidos = Math.min(videosAssistidos + 1, totalVideos);
-        const novaLargura = (videosAssistidos / totalVideos) * 100;
-        document.querySelector('.progress-bar').style.width = novaLargura + '%';
-        document.querySelector('.progress-bar').textContent = Math.round(novaLargura) + '%';
-
-        const progressoData = {
-          usuarioId: usuarioId,
-          cursoId: cursoId,
-          videosAssistidos: videosAssistidos,
-          totalVideos: totalVideos
-        };
-
-        fetch('/salvarProgresso', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(progressoData)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.message);
-        })
-        .catch(error => {
-          console.error('Erro ao salvar o progresso:', error);
-        });
-      }
-
-      document.getElementById(overlayId).style.display = "flex";
+      // Optional: Call function to track progress, etc.
+      openVideo(cursoId);
     }
-  
-    function closeOverlay(overlayId) {
-      document.getElementById(overlayId).style.display = "none";
+
+    function openVideo(cursoId) {
+      // Your existing logic to handle video tracking
+      console.log('Opening video for course ID:', cursoId);
     }
-  
+
+    // Sidebar toggle
     $('#menu-toggle').on('click', function () {
       $('#sidebar').toggleClass('active');
       $('#content').toggleClass('shifted');
     });
-  
-    window.onload = function() {
-      fetchUsuarioId();
-    };
+
+    // Adjust textarea height dynamically
+    document.getElementById('videoNotes').addEventListener('input', function () {
+      this.style.height = 'auto'; // Reset height
+      this.style.height = (this.scrollHeight) + 'px'; // Set height to scrollHeight
+    });
   </script>
 </body>
 
