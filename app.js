@@ -27,14 +27,14 @@ db.connect((err) => {
     console.log('Conectado ao banco de dados MySQL com Sucesso!');
 });
 
-// Servir arquivos estáticos (CSS, imagens, etc.)
-app.use(express.static(path.join(__dirname, 'public')));
+// Servir arquivos estáticos (CSS, imagens, etc.) diretamente da raiz
+app.use(express.static(path.join(__dirname, 'js')));
 app.use(express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use(express.static(path.join(__dirname, 'img')));
-app.use(express.static(path.join(__dirname, 'html')));
 app.use(express.static(path.join(__dirname, 'video')));
-console.log('Servindo arquivos estáticos a partir da pasta public');
+app.use(express.static(path.join(__dirname, 'html')));
+console.log('Servindo arquivos estáticos a partir da raiz do projeto');
 
 // Armazenar informações do usuario
 app.use(session({
@@ -52,9 +52,11 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/indexSingIn.html'));
 });
+
 app.get('/cadastro', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/indexCadastro.html'));
 });
+
 app.get('/word', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/word.html'));
 });
@@ -62,7 +64,6 @@ app.get('/word', (req, res) => {
 app.get('/video', (req, res) => {
     res.sendFile(path.join(__dirname, '/video'));
 });
-
 
 app.get('/pagaluno', (req, res) => {
     if (!req.session.usuario) {
@@ -136,7 +137,7 @@ app.post('/cadastrar', (req, res) => {
     });
 });
 
-//verificar cadastros
+// verificar cadastros
 app.post('/verificarCadastro', (req, res) => {
     const { email } = req.body;
     const query = 'SELECT * FROM usuario WHERE email = ?';
@@ -250,7 +251,7 @@ app.put('/update/:idusuario', (req, res) => {
     });
 });
 
-// Rota para deletar dados
+// Rota para excluir dados
 app.delete('/delete/:idusuario', (req, res) => {
     const { idusuario } = req.params;
     const query = 'DELETE FROM usuario WHERE idusuario = ?';
@@ -258,10 +259,11 @@ app.delete('/delete/:idusuario', (req, res) => {
         if (err) {
             throw err;
         }
-        res.json({ message: 'Dados deletados com sucesso!' });
+        res.json({ message: 'Dados excluídos com sucesso!' });
     });
 });
 
+// Iniciar o servidor
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
