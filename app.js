@@ -53,6 +53,10 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/indexSingIn.html'));
 });
 
+app.get('/dist', (req, res) => {
+    res.sendFile(path.join(__dirname, '/html/indexDist.html'));
+});
+
 app.get('/cadastro', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/indexCadastro.html'));
 });
